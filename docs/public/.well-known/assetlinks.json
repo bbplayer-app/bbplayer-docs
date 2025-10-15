@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.roitium.bbplayer",
+      "sha256_cert_fingerprints": [
+	"DD:DE:56:26:1C:CB:62:DC:F8:11:75:16:49:9E:04:FF:E9:DD:F3:1E:59:BA:4C:B8:0E:1D:04:7F:D6:97:79:36"
+      ]
+    }
+  }
+]
+
