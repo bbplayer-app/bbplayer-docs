@@ -48,7 +48,7 @@ features:
   - icon: ⭐
     title: 开源项目
     details: 欢迎点个 star，提个 issue！当然如果是 pr 就更好了！
-    link: https://github.com/roitium/bbplayer
+    link: https://github.com/bbplayer-app/bbplayer
     linkText: 前往 GitHub
     
   - icon: ⚛️

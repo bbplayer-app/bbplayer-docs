@@ -15,7 +15,7 @@ export default defineConfig({
       { text: '指南', link: '/guides' },
     ],
     editLink: {
-      pattern: 'https://github.com/roitium/bbplayer-docs/edit/main/docs/:path'
+      pattern: 'https://github.com/bbplayer-app/bbplayer-docs/edit/main/docs/:path'
     },
     outline: [2, 5],
 
@@ -34,7 +34,7 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/roitium/bbplayer' }
+      { icon: 'github', link: 'https://github.com/bbplayer-app/bbplayer' }
     ]
   }
 })

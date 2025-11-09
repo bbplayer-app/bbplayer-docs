@@ -5,15 +5,9 @@ editLink: true
 
 # 安装
 
-~~由于开发者没有 Mac 电脑，完全无法开发 iOS 端~~，故目前只有 Android 端（在可预见的未来，也只会有 Android 端）。目前，我们提供两种安装方式：从 GitHub Release 下载 APK 文件，或者从网盘中下载。
+~~由于开发者没有 Mac 电脑，完全无法开发 iOS 端~~，故目前只有 Android 端（在可预见的未来，也只会有 Android 端）
 
-## GitHub Release
-
-BBPlayer 的每次更新都会发布在：[GitHub Release](https://github.com/roitium/bbplayer/releases)，你可以在页面上点击「Assets」标签，找到最新版本的 APK 文件并安装。
-
-## 网盘
-
-点击[这里](https://files.roitium.com/share/_SDsw-QN)，即可获取 BBPlayer 的 APK 文件。但注意，网盘上的版本可能更新不及时，安装后如果提示有新版本建议及时更新（目前来说，后续更新需要保证您的网络环境能访问 GitHub，考虑会提供一个国内友好的更新方式？）
+BBPlayer 的每次更新都会发布在：[GitHub Release](https://github.com/bbplayer-app/bbplayer/releases)，你可以在页面上点击「Assets」标签，找到最新版本的 APK 文件并安装。
 
 ## 热更新
 
