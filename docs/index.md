@@ -53,5 +53,5 @@ features:
     
   - icon: ⚛️
     title: Btw, I use React Native
-    details: 纯 React Native 项目，开发者本人完全不会 Kotlin 原生安卓开发捏。
+    details: React Native 项目，音频库为开发者自己封装的 Media3，代号 Orpheus
 ---
