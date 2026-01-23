@@ -12,8 +12,9 @@ const isOnInAppBrowser = ref(false);
 
 onMounted(() => {
   // Check for in-app browser
+  // Matches: WeChat, QQ, Weibo, Alipay, DingTalk, Zhihu, Baidu, Bilibili (in-app)
   const ua = navigator.userAgent;
-  isOnInAppBrowser.value = /MicroMessenger|QQ\//i.test(ua);
+  isOnInAppBrowser.value = /MicroMessenger|QQ\/|Weibo|AlipayClient|DingTalk|ZhihuHybrid|BaiduBoxApp/i.test(ua);
 
   const params = new URLSearchParams(window.location.search);
   id.value = params.get("id") || "";
