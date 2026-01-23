@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import { Play, Tv2, AlertCircle, Music2 } from "lucide-vue-next";
+import { Play, Tv2, AlertCircle, Music2, ExternalLink } from "lucide-vue-next";
 
 const id = ref("");
 const title = ref("");
@@ -8,8 +8,13 @@ const cover = ref("");
 const error = ref("");
 const bvid = ref("");
 const cid = ref("");
+const isOnInAppBrowser = ref(false);
 
 onMounted(() => {
+  // Check for in-app browser
+  const ua = navigator.userAgent;
+  isOnInAppBrowser.value = /MicroMessenger|QQ\//i.test(ua);
+
   const params = new URLSearchParams(window.location.search);
   id.value = params.get("id") || "";
   title.value = params.get("title") || "";
@@ -51,6 +56,14 @@ const bbplayerUrl = computed(() => {
 
 <template>
   <div class="share-track-container">
+    <div v-if="isOnInAppBrowser" class="browser-overlay">
+      <div class="overlay-content">
+        <ExternalLink :size="48" class="overlay-icon" />
+        <h3 class="overlay-title">请在浏览器打开</h3>
+        <p class="overlay-desc">点击右上角菜单，选择在浏览器打开以继续</p>
+      </div>
+    </div>
+    
     <div class="share-card" v-if="!error">
       <div class="cover-wrapper">
         <img
@@ -306,5 +319,44 @@ const bbplayerUrl = computed(() => {
     font-size: 1.25rem;
     margin-bottom: 32px;
   }
+}
+
+.browser-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.overlay-content {
+  text-align: center;
+  color: white;
+}
+
+.overlay-icon {
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.overlay-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.overlay-desc {
+  font-size: 1rem;
+  opacity: 0.8;
+  line-height: 1.6;
 }
 </style>
