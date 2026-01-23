@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, onUnmounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { Play, Tv2, AlertCircle, Music2 } from "lucide-vue-next";
-import { Toaster, toast } from "vue-sonner";
 
 const id = ref("");
 const title = ref("");
@@ -30,12 +29,6 @@ onMounted(() => {
   } else {
     error.value = "暂不支持此来源的分享链接";
   }
-  
-  document.addEventListener("visibilitychange", handleVisibilityChange);
-});
-
-onUnmounted(() => {
-  document.removeEventListener("visibilitychange", handleVisibilityChange);
 });
 
 const bilibiliUrl = computed(() => {
@@ -49,43 +42,12 @@ const bilibiliUrl = computed(() => {
 
 const bbplayerUrl = computed(() => {
   if (!bvid.value) return "";
-  return `bbplayer://link-to/playlist/remote/multipage/${bvid.value}`;
+  return `bbplayer://playlist/remote/multipage/${bvid.value}` + (cid.value ? `?cid=${cid.value}` : "");
 });
-
-let timeoutId: number | null = null;
-
-const handleVisibilityChange = () => {
-  // If the page becomes hidden (user switched to app), clear the timeout
-  if (document.hidden && timeoutId) {
-    clearTimeout(timeoutId);
-    timeoutId = null;
-  }
-};
-
-const handleOpenApp = (e: Event) => {
-  e.preventDefault();
-  
-  if (!bbplayerUrl.value) return;
-  
-  // Try to open the app
-  window.location.href = bbplayerUrl.value;
-  
-  // Set a timeout to check if the user is still here
-  timeoutId = window.setTimeout(() => {
-    if (!document.hidden) {
-      toast.error("无法打开 BBPlayer", {
-        description: "请确保您已安装最新版本的 BBPlayer",
-        duration: 4000,
-      });
-    }
-    timeoutId = null;
-  }, 2500);
-};
 </script>
 
 <template>
   <div class="share-track-container">
-    <Toaster position="top-center" :theme-mode="'system'" />
     <div class="share-card" v-if="!error">
       <div class="cover-wrapper">
         <img
@@ -113,7 +75,7 @@ const handleOpenApp = (e: Event) => {
           在 Bilibili 打开
         </a>
 
-        <a :href="bbplayerUrl" @click="handleOpenApp" class="btn btn-primary">
+        <a :href="bbplayerUrl" class="btn btn-primary">
           <Play class="btn-icon" :size="20" fill="currentColor" />
           在 BBPlayer 打开
         </a>
