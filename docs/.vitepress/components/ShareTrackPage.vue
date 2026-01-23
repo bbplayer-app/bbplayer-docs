@@ -99,11 +99,6 @@ const bbplayerUrl = computed(() => {
           在 BBPlayer 打开
         </a>
       </div>
-
-      <div class="footer">
-        <p class="hint">来自 BBPlayer | 由 Roitium ❤️ 构建</p>
-        <a href="https://bbplayer.roitium.com" target="_blank" class="footer-link">bbplayer.roitium.com</a>
-      </div>
     </div>
 
     <div class="error-card" v-else>
@@ -112,6 +107,11 @@ const bbplayerUrl = computed(() => {
       </div>
       <h2 class="error-title">{{ error }}</h2>
       <p class="error-desc">请检查分享链接是否正确</p>
+    </div>
+
+    <div class="footer">
+      <p class="hint">来自 BBPlayer | 由 Roitium ❤️ 构建</p>
+      <a href="https://bbplayer.roitium.com" target="_blank" class="footer-link">bbplayer.roitium.com</a>
     </div>
   </div>
 </template>
@@ -144,8 +144,9 @@ const bbplayerUrl = computed(() => {
 }
 
 .share-track-container {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 24px;
@@ -166,6 +167,7 @@ const bbplayerUrl = computed(() => {
   border: 1px solid var(--border-color);
   animation: fadeIn 0.6s ease-out;
   transition: all 0.5s ease;
+  margin: auto;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -235,18 +237,19 @@ const bbplayerUrl = computed(() => {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 16px 24px;
-  border-radius: 16px;
+  padding: 16px 32px;
+  border-radius: 9999px;
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
 
 .btn-primary {
   background-color: var(--primary-color);
   color: var(--primary-fg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:hover {
@@ -269,11 +272,12 @@ const bbplayerUrl = computed(() => {
 }
 
 .footer {
-  margin-top: 40px;
+  margin-top: 24px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   opacity: 0.8;
+  text-align: center;
 }
 
 .hint {
@@ -303,6 +307,7 @@ const bbplayerUrl = computed(() => {
   text-align: center;
   border: 1px solid var(--border-color);
   animation: fadeIn 0.5s ease-out;
+  margin: auto;
 }
 
 .error-icon {
