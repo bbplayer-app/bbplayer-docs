@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { Play, Tv2, AlertCircle, Music2, ExternalLink } from "lucide-vue-next";
-import { FastAverageColor } from "fast-average-color";
 
 const id = ref("");
 const title = ref("");
@@ -10,11 +9,6 @@ const error = ref("");
 const bvid = ref("");
 const cid = ref("");
 const isOnInAppBrowser = ref(false);
-
-const containerStyle = ref({});
-const cardStyle = ref({});
-const textStyle = ref({});
-const secondaryBtnStyle = ref({});
 
 onMounted(() => {
   // Check for in-app browser
@@ -41,25 +35,6 @@ onMounted(() => {
   } else {
     error.value = "暂不支持此来源的分享链接";
   }
-
-  // Extract color from cover
-  if (cover.value) {
-    const fac = new FastAverageColor();
-    fac.getColorAsync(cover.value)
-      .then(color => {
-        const isDark = color.isDark;
-        const bgColor = color.hex;
-        const textColor = isDark ? '#ffffff' : '#111827';
-        const cardBg = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.9)';
-        const secondaryBtnBg = isDark ? 'rgba(255, 255, 255, 0.2)' : '#f3f4f6';
-        
-        containerStyle.value = { backgroundColor: bgColor, color: textColor };
-        cardStyle.value = { background: cardBg, backdropFilter: 'blur(10px)', border: 'none' };
-        textStyle.value = { color: textColor };
-        secondaryBtnStyle.value = { backgroundColor: secondaryBtnBg, color: textColor };
-      })
-      .catch(e => console.error(e));
-  }
 });
 
 const bilibiliUrl = computed(() => {
@@ -81,7 +56,7 @@ const bbplayerUrl = computed(() => {
 </script>
 
 <template>
-  <div class="share-track-container" :style="containerStyle">
+  <div class="share-track-container">
     <div v-if="isOnInAppBrowser" class="browser-overlay">
       <div class="overlay-content">
         <div class="overlay-icon-wrapper">
@@ -92,14 +67,13 @@ const bbplayerUrl = computed(() => {
       </div>
     </div>
     
-    <div class="share-card" v-if="!error" :style="cardStyle">
+    <div class="share-card" v-if="!error">
       <div class="cover-wrapper">
         <img
           v-if="cover"
           :src="cover"
           :alt="title"
           class="cover-image"
-          crossorigin="anonymous"
           referrerpolicy="no-referrer"
         />
         <div v-else class="cover-placeholder">
@@ -107,7 +81,7 @@ const bbplayerUrl = computed(() => {
         </div>
       </div>
 
-      <h1 class="track-title" :style="textStyle">{{ title || "未知曲目" }}</h1>
+      <h1 class="track-title">{{ title || "未知曲目" }}</h1>
 
       <div class="button-group">
         <a
@@ -115,7 +89,6 @@ const bbplayerUrl = computed(() => {
           target="_blank"
           rel="noopener noreferrer"
           class="btn btn-secondary"
-          :style="secondaryBtnStyle"
         >
           <Tv2 class="btn-icon" :size="20" />
           在 Bilibili 打开
@@ -128,8 +101,8 @@ const bbplayerUrl = computed(() => {
       </div>
 
       <div class="footer">
-        <p class="hint" :style="textStyle">来自 BBPlayer | 由 Roitium ❤️ 构建</p>
-        <a href="https://bbplayer.roitium.com" target="_blank" class="footer-link" :style="textStyle">bbplayer.roitium.com</a>
+        <p class="hint">来自 BBPlayer | 由 Roitium ❤️ 构建</p>
+        <a href="https://bbplayer.roitium.com" target="_blank" class="footer-link">bbplayer.roitium.com</a>
       </div>
     </div>
 
