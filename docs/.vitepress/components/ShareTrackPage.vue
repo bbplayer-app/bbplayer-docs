@@ -42,7 +42,10 @@ const bilibiliUrl = computed(() => {
 
 const bbplayerUrl = computed(() => {
   if (!bvid.value) return "";
-  return `bbplayer://playlist/remote/multipage/${bvid.value}` + (cid.value ? `?cid=${cid.value}` : "");
+  if (cid.value) {
+    return `bbplayer://playlist/remote/multipage/${bvid.value}?cid=${cid.value}`;
+  }
+  return `bbplayer://playlist/remote/search-result/global/${bvid.value}`;
 });
 </script>
 
