@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { Play, Tv2, AlertCircle, Music2, ExternalLink } from "lucide-vue-next";
+import { FastAverageColor } from "fast-average-color";
 
 const id = ref("");
 const title = ref("");
@@ -9,6 +10,11 @@ const error = ref("");
 const bvid = ref("");
 const cid = ref("");
 const isOnInAppBrowser = ref(false);
+
+const containerStyle = ref({});
+const cardStyle = ref({});
+const textStyle = ref({});
+const secondaryBtnStyle = ref({});
 
 onMounted(() => {
   // Check for in-app browser
@@ -35,6 +41,25 @@ onMounted(() => {
   } else {
     error.value = "暂不支持此来源的分享链接";
   }
+
+  // Extract color from cover
+  if (cover.value) {
+    const fac = new FastAverageColor();
+    fac.getColorAsync(cover.value)
+      .then(color => {
+        const isDark = color.isDark;
+        const bgColor = color.hex;
+        const textColor = isDark ? '#ffffff' : '#111827';
+        const cardBg = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.9)';
+        const secondaryBtnBg = isDark ? 'rgba(255, 255, 255, 0.2)' : '#f3f4f6';
+        
+        containerStyle.value = { backgroundColor: bgColor, color: textColor };
+        cardStyle.value = { background: cardBg, backdropFilter: 'blur(10px)', border: 'none' };
+        textStyle.value = { color: textColor };
+        secondaryBtnStyle.value = { backgroundColor: secondaryBtnBg, color: textColor };
+      })
+      .catch(e => console.error(e));
+  }
 });
 
 const bilibiliUrl = computed(() => {
@@ -56,22 +81,25 @@ const bbplayerUrl = computed(() => {
 </script>
 
 <template>
-  <div class="share-track-container">
+  <div class="share-track-container" :style="containerStyle">
     <div v-if="isOnInAppBrowser" class="browser-overlay">
       <div class="overlay-content">
-        <ExternalLink :size="48" class="overlay-icon" />
+        <div class="overlay-icon-wrapper">
+          <ExternalLink :size="48" class="overlay-icon" />
+        </div>
         <h3 class="overlay-title">请在浏览器打开</h3>
         <p class="overlay-desc">点击右上角菜单，选择在浏览器打开以继续</p>
       </div>
     </div>
     
-    <div class="share-card" v-if="!error">
+    <div class="share-card" v-if="!error" :style="cardStyle">
       <div class="cover-wrapper">
         <img
           v-if="cover"
           :src="cover"
           :alt="title"
           class="cover-image"
+          crossorigin="anonymous"
           referrerpolicy="no-referrer"
         />
         <div v-else class="cover-placeholder">
@@ -79,7 +107,7 @@ const bbplayerUrl = computed(() => {
         </div>
       </div>
 
-      <h1 class="track-title">{{ title || "未知曲目" }}</h1>
+      <h1 class="track-title" :style="textStyle">{{ title || "未知曲目" }}</h1>
 
       <div class="button-group">
         <a
@@ -87,6 +115,7 @@ const bbplayerUrl = computed(() => {
           target="_blank"
           rel="noopener noreferrer"
           class="btn btn-secondary"
+          :style="secondaryBtnStyle"
         >
           <Tv2 class="btn-icon" :size="20" />
           在 Bilibili 打开
@@ -98,7 +127,10 @@ const bbplayerUrl = computed(() => {
         </a>
       </div>
 
-      <p class="hint">BBPlayer 是一个开源的 B 站音乐播放器</p>
+      <div class="footer">
+        <p class="hint" :style="textStyle">来自 BBPlayer | 由 Roitium ❤️ 构建</p>
+        <a href="https://bbplayer.roitium.com" target="_blank" class="footer-link" :style="textStyle">bbplayer.roitium.com</a>
+      </div>
     </div>
 
     <div class="error-card" v-else>
@@ -147,7 +179,7 @@ const bbplayerUrl = computed(() => {
   background-color: var(--bg-color);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: var(--text-primary);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.5s ease;
 }
 
 .share-card {
@@ -160,6 +192,7 @@ const bbplayerUrl = computed(() => {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
   border: 1px solid var(--border-color);
   animation: fadeIn 0.6s ease-out;
+  transition: all 0.5s ease;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -254,7 +287,7 @@ const bbplayerUrl = computed(() => {
 }
 
 .btn-secondary:hover {
-  background-color: var(--border-color);
+  opacity: 0.8;
   transform: translateY(-1px);
 }
 
@@ -262,10 +295,30 @@ const bbplayerUrl = computed(() => {
   opacity: 0.9;
 }
 
+.footer {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0.8;
+}
+
 .hint {
-  margin-top: 32px;
   font-size: 0.875rem;
   color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.footer-link {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+  opacity: 1;
 }
 
 .error-card {
@@ -306,8 +359,9 @@ const bbplayerUrl = computed(() => {
   .share-card {
     padding: 32px 24px;
     box-shadow: none;
-    background: transparent;
-    border: none;
+    background: transparent !important;
+    border: none !important;
+    backdrop-filter: none !important;
   }
   
   .cover-wrapper {
@@ -341,10 +395,20 @@ const bbplayerUrl = computed(() => {
 .overlay-content {
   text-align: center;
   color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.overlay-icon-wrapper {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .overlay-icon {
-  margin-bottom: 24px;
   opacity: 0.9;
 }
 
