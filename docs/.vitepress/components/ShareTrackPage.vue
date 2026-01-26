@@ -8,6 +8,7 @@ const cover = ref("");
 const error = ref("");
 const bvid = ref("");
 const cid = ref("");
+const p = ref("");
 const isOnInAppBrowser = ref(false);
 
 onMounted(() => {
@@ -20,6 +21,7 @@ onMounted(() => {
   id.value = params.get("id") || "";
   title.value = params.get("title") || "";
   cover.value = params.get("cover") || "";
+  p.value = params.get("p") || "";
 
   // Parse bilibili id
   if (id.value.startsWith("bilibili::")) {
@@ -40,7 +42,9 @@ onMounted(() => {
 const bilibiliUrl = computed(() => {
   if (!bvid.value) return "";
   let url = `https://www.bilibili.com/video/${bvid.value}`;
-  if (cid.value) {
+  if (p.value) {
+    url += `?p=${p.value}`;
+  } else if (cid.value) {
     url += `?p=1`;
   }
   return url;
