@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Download, Github } from "lucide-vue-next";
 
-const githubUrl = "https://github.com/roitium/bbplayer/releases";
+const githubUrl = "https://github.com/bbplayer-app/bbplayer/releases";
 </script>
 
 <template>
