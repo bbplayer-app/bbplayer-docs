@@ -57,6 +57,14 @@ const bbplayerUrl = computed(() => {
   }
   return `bbplayer://playlist/remote/search-result/global/${bvid.value}`;
 });
+
+const bbplayerAppLinkUrl = computed(() => {
+  if (!bvid.value) return "";
+  if (cid.value) {
+    return `https://app.bbplayer.roitium.com/playlist/remote/multipage/${bvid.value}?cid=${cid.value}`;
+  }
+  return `https://app.bbplayer.roitium.com/playlist/remote/search-result/global/${bvid.value}`;
+});
 </script>
 
 <template>
@@ -101,6 +109,11 @@ const bbplayerUrl = computed(() => {
         <a :href="bbplayerUrl" class="btn btn-primary">
           <Play class="btn-icon" :size="20" fill="currentColor" />
           在 BBPlayer 打开
+        </a>
+
+        <a :href="bbplayerAppLinkUrl" class="btn btn-primary">
+          <Play class="btn-icon" :size="20" fill="currentColor" />
+          在 BBPlayer 打开（测试）
         </a>
       </div>
     </div>
